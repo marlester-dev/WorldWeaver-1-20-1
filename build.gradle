@@ -11,12 +11,6 @@ archivesBaseName = project.archives_base_name
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-allprojects {
-    tasks.withType(Jar).all {
-        duplicatesStrategy 'exclude'
-    }
-}
-
 def moduleDependencies(project, List<String> depNames) {
     def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
     project.dependencies {
