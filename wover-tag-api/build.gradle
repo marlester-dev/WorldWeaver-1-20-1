@@ -1,0 +1,17 @@
+archivesBaseName = "wover-tag-api"
+
+ext {
+    baseNamespace = "tag"
+    baseClass = "WoverTag"
+}
+
+dependencies {
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/wover-tag.accesswidener')
+}
+
+moduleDependencies(project, ['wover-core-api', 'wover-datagen-api', 'wover-event-api'])
+//datagenDependencies(project, ['wover-preset-api'])

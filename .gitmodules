@@ -1,0 +1,3 @@
+[submodule "WunderLib"]
+	path = WunderLib
+	url = https://github.com/quiqueck/WunderLib.git

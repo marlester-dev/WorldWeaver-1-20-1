@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'idea'
+    id 'eclipse'
+    id 'fabric-loom' version "${loom_version}"
+    id "com.modrinth.minotaur" version "2.+"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+archivesBaseName = project.archives_base_name
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+allprojects {
+    tasks.withType(Jar).all {
+        duplicatesStrategy 'exclude'
+    }
+}
+
+def moduleDependencies(project, List<String> depNames) {
+    def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
+    project.dependencies {
+        deps.each {
+            api it
+        }
+    }
+}
+
+def testDependencies(project, List<String> depNames) {
+    def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
+
+    project.dependencies {
+        deps.each {
+            testmodImplementation it
+            testmodClientImplementation it
+        }
+    }
+}
+
+def datagenDependencies(project, List<String> depNames) {
+    def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
+    def depsClient = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'devClient') }
+
+    project.dependencies {
+        deps.each {
+            datagenImplementation it
+        }
+
+        depsClient.each {
+            datagenImplementation it
+        }
+    }
+}
+
+apply from: "common.gradle"
+apply from: "helper.gradle"
